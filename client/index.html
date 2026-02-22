@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grandstream GWN Selector</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body class="bg-slate-50 h-screen flex flex-col font-sans text-slate-800 overflow-hidden">
+    
+    <header class="bg-white text-gs-blue shadow-sm border-b border-gray-200 shrink-0 z-30">
+        <div class="container mx-auto px-4 md:px-6 py-3 md:py-4 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <img src="https://www.grandstream.com/hs-fs/hubfs/raw_assets/public/Grandstream_Feb_2021/images/logo-grandstream-low-web.png?width=450&height=153&name=logo-grandstream-low-web.png"
+                    alt="Grandstream" class="h-6 md:h-8 object-contain">
+                <span class="text-xs font-bold tracking-[0.2em] border-l-2 border-gs-blue pl-4 hidden md:block text-gs-blue uppercase">GWN Selector</span>
+            </div>
+            <div class="md:hidden text-xs font-bold text-gs-blue bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+                <span id="contador-mobile">0</span> APs
+            </div>
+        </div>
+    </header>
+
+    <div class="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex justify-between items-center shrink-0 z-20">
+        <button type="button" onclick="toggleSidebar()" class="flex items-center gap-2 text-sm font-bold text-gs-blue">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+            Filters
+        </button>
+        <span class="text-xs text-gray-400 font-medium">Tap to refine search</span>
+    </div>
+
+    <div class="container mx-auto flex lg:flex-row gap-6 p-4 md:p-6 items-start flex-1 overflow-hidden relative">
+        
+        <div id="mobile-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden backdrop-blur-sm transition-opacity opacity-0"></div>
+
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-[85vw] md:w-80 bg-white transform -translate-x-full lg:translate-x-0 lg:static flex flex-col border-r lg:border lg:rounded-lg border-gray-200 shadow-2xl lg:shadow-lg transition-transform duration-300 ease-in-out h-full lg:h-full lg:max-h-[calc(100vh-120px)]">
+            <div class="p-5 border-b border-gray-100 bg-white z-10 flex justify-between items-center shadow-sm shrink-0">
+                <h2 class="text-sm font-bold text-gray-800 uppercase tracking-tight flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gs-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    </svg>
+                    Technical Filters
+                </h2>
+                <button type="button" onclick="toggleSidebar()" class="lg:hidden text-gray-400 hover:text-gray-600" aria-label="Close sidebar">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+                <button type="button" onclick="window.location.reload()" class="hidden lg:block text-xs text-gs-light hover:text-gs-blue hover:underline transition">Reset</button>
+            </div>
+
+            <div class="p-5 overflow-y-auto custom-scroll space-y-6 flex-1">
+                <div>
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 block">Model</label>
+                    <input type="text" id="busqueda" placeholder="Ex: GWN7664" class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded text-sm focus:border-gs-blue focus:ring-1 focus:ring-gs-blue outline-none transition" oninput="filtrar()">
+                </div>
+                <div>
+                    <h3 class="text-xs font-bold text-gray-400 uppercase mb-2">Environment</h3>
+                    <div class="grid grid-cols-2 gap-2 bg-gray-100 p-1 rounded">
+                        <label class="text-center cursor-pointer"><input type="radio" name="cat" value="all" checked onchange="filtrar()" class="peer hidden"><span class="block py-1 text-xs rounded text-gray-500 peer-checked:bg-white peer-checked:text-gs-blue peer-checked:shadow-sm font-bold transition">All</span></label>
+                        <label class="text-center cursor-pointer"><input type="radio" name="cat" value="interior" onchange="filtrar()" class="peer hidden"><span class="block py-1 text-xs rounded text-gray-500 peer-checked:bg-white peer-checked:text-gs-blue peer-checked:shadow-sm font-bold transition">Indoor</span></label>
+                        <label class="text-center cursor-pointer"><input type="radio" name="cat" value="exterior" onchange="filtrar()" class="peer hidden"><span class="block py-1 text-xs rounded text-gray-500 peer-checked:bg-white peer-checked:text-gs-blue peer-checked:shadow-sm font-bold transition">Outdoor</span></label>
+                        <label class="text-center cursor-pointer"><input type="radio" name="cat" value="ptp" onchange="filtrar()" class="peer hidden"><span class="block py-1 text-xs rounded text-gray-500 peer-checked:bg-white peer-checked:text-orange-600 peer-checked:shadow-sm font-bold transition">PtP Bridge</span></label>
+                    </div>
+                </div>
+                <div class="border-t border-dashed border-gray-200 pt-4">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase mb-2">Wi-Fi Generation</h3>
+                    <div class="space-y-1">
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded transition"><input type="radio" name="tech" value="all" checked onchange="filtrar()" class="accent-gs-blue"><span class="text-sm text-gray-600 font-medium">Any</span></label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-purple-50 p-1 rounded transition"><input type="radio" name="tech" value="7" onchange="filtrar()" class="accent-purple-600"><span class="text-sm font-bold text-purple-700">Wi-Fi 7 (802.11be)</span></label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-green-50 p-1 rounded transition"><input type="radio" name="tech" value="6" onchange="filtrar()" class="accent-green-600"><span class="text-sm font-semibold text-green-700">Wi-Fi 6 / 6E</span></label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-blue-50 p-1 rounded transition"><input type="radio" name="tech" value="5" onchange="filtrar()" class="accent-blue-600"><span class="text-sm font-semibold text-blue-700">Wi-Fi 5 (AC)</span></label>
+                    </div>
+                </div>
+                <div class="border-t border-dashed border-gray-200 pt-4">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase mb-2">Antenna Config (Exact)</h3>
+                    <div class="mb-3">
+                        <label for="mimo5" class="text-[10px] text-gray-500 uppercase font-semibold">5GHz / 6GHz Band</label>
+                        <select id="mimo5" onchange="filtrar()" class="w-full text-sm border-gray-300 rounded focus:border-gs-blue focus:ring-gs-blue bg-white p-2 mt-1 cursor-pointer">
+                            <option value="all">Any</option><option value="2">2x2</option><option value="3">3x3</option><option value="4">4x4</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="mimo24" class="text-[10px] text-gray-500 uppercase font-semibold">2.4GHz Band</label>
+                        <select id="mimo24" onchange="filtrar()" class="w-full text-sm border-gray-300 rounded focus:border-gs-blue focus:ring-gs-blue bg-white p-2 mt-1 cursor-pointer">
+                            <option value="all">Any</option><option value="2">2x2</option><option value="3">3x3</option><option value="4">4x4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="border-t border-dashed border-gray-200 pt-4">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase mb-2">Interfaces & Power</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded"><input type="checkbox" value="10G" class="rounded text-gs-blue focus:ring-gs-blue ports-check" onchange="filtrar()"><span class="text-sm text-gray-600 font-medium">10 Gigabit</span></label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded"><input type="checkbox" value="2.5G" class="rounded text-gs-blue focus:ring-gs-blue ports-check" onchange="filtrar()"><span class="text-sm text-gray-600 font-medium">2.5 Gigabit</span></label>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded"><input type="checkbox" value="Gigabit" class="rounded text-gs-blue focus:ring-gs-blue ports-check" onchange="filtrar()"><span class="text-sm text-gray-600 font-medium">1 Gigabit</span></label>
+                        <div class="border-t border-gray-100 my-2"></div>
+                        <label class="flex items-center gap-2 cursor-pointer hover:bg-orange-50 p-1 rounded transition">
+                            <input type="checkbox" id="pseCheck" class="rounded text-orange-500 focus:ring-orange-500" onchange="filtrar()">
+                            <span class="text-sm font-medium text-gray-600 flex items-center gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-orange-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" /></svg>
+                                PSE Support
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="border-t border-dashed border-gray-200 pt-4 space-y-5">
+                    <div>
+                        <div class="flex justify-between text-xs mb-1.5 items-end"><span class="font-bold text-gray-500 uppercase text-[10px] tracking-wider">Min Throughput</span><span class="font-bold text-gs-blue bg-blue-50 px-2 py-0.5 rounded" id="speedDisplay">0 Gbps+</span></div>
+                        <input type="range" id="speed" min="0" max="22" step="0.5" value="0" class="w-full" aria-label="Minimum throughput" oninput="document.getElementById('speedDisplay').innerText = this.value + ' Gbps+'; filtrar()">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1.5 items-end"><span class="font-bold text-gray-500 uppercase text-[10px] tracking-wider">Min Clients</span><span class="font-bold text-gs-blue bg-blue-50 px-2 py-0.5 rounded" id="clientDisplay">0+</span></div>
+                        <input type="range" id="clients" min="0" max="800" step="50" value="0" class="w-full" aria-label="Minimum clients" oninput="document.getElementById('clientDisplay').innerText = this.value + '+'; filtrar()">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1.5 items-end"><span class="font-bold text-gray-500 uppercase text-[10px] tracking-wider">Min Coverage</span><span class="font-bold text-gs-blue bg-blue-50 px-2 py-0.5 rounded" id="rangeDisplay">0m+</span></div>
+                        <input type="range" id="coverage" min="0" max="5000" step="100" value="0" class="w-full" aria-label="Minimum coverage" oninput="document.getElementById('rangeDisplay').innerText = this.value + 'm+'; filtrar()">
+                    </div>
+                </div>
+                <div class="lg:hidden mt-4 pt-4 border-t border-gray-200">
+                    <button type="button" onclick="window.location.reload()" class="w-full py-2 bg-gray-100 text-gray-600 font-bold rounded text-sm hover:bg-gray-200">Reset All Filters</button>
+                    <button type="button" onclick="toggleSidebar()" class="w-full py-2 mt-2 bg-gs-blue text-white font-bold rounded text-sm hover:bg-gs-light shadow-md">View Results</button>
+                </div>
+                <div class="h-4"></div>
+            </div>
+        </aside>
+
+        <main class="flex-1 w-full h-full overflow-y-auto pr-0 md:pr-2 custom-scroll pb-20 md:pb-0">
+            <div class="mb-4 hidden md:flex justify-between items-center">
+                 <p class="text-sm text-gray-500">Showing <span id="contador" class="font-bold text-gs-blue">0</span> devices</p>
+            </div>
+            <div id="lista-aps" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4 md:gap-6 items-start pb-20">
+                <div class="col-span-full py-32 text-center">
+                    <div class="inline-block animate-spin rounded-full h-10 w-10 border-[3px] border-gs-blue border-r-transparent"></div>
+                    <p class="mt-4 text-sm text-gray-400 font-medium animate-pulse">Loading Catalog...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="./js/app.js"></script>
+</body>
+</html>
