@@ -1,47 +1,27 @@
-# 📞 Grandstream Product Finder (MERN Stack)
+# 📡 Grandstream GWN Selector
 
-<p align="center">
-  <img src="https://www.grandstream.com/hs-fs/hubfs/raw_assets/public/Grandstream_Feb_2021/images/logo-grandstream-low-web.png?width=450&height=153&name=logo-grandstream-low-web.png" width="400" alt="Grandstream Logo">
-</p>
+Una aplicación web full-stack diseñada para explorar, filtrar y comparar los Puntos de Acceso (Access Points) de la serie GWN de Grandstream. Permite a los usuarios encontrar el equipo ideal basándose en especificaciones técnicas como tecnología Wi-Fi, entorno, rendimiento y capacidad de clientes.
 
-> **Selector inteligente de terminales IP Grandstream.** Filtra por conectividad, tipo de pantalla y capacidad de cuentas SIP en tiempo real.
+## ✨ Características Principales
 
-Este proyecto es una aplicación **Full-Stack** diseñada para ayudar a integradores y preventas a encontrar el teléfono ideal dentro del ecosistema de Grandstream.
-
----
-
-## 🚀 Características
-
-- 🔍 **Búsqueda en tiempo real**: Filtra por modelo o descripción.
-- 📡 **Filtros avanzados**:
-  - **Conectividad**: Wi-Fi, Bluetooth y soporte PoE.
-  - **Pantalla**: Selección entre pantallas a Color (Multicolor) o Monocromáticas.
-  - **Capacidad**: Slider dinámico para filtrar por número mínimo de cuentas SIP.
-- 📱 **Diseño Responsivo**: Interfaz moderna construida con **Tailwind CSS** siguiendo la línea de diseño oficial de Grandstream.
-- ⚡ **Arquitectura Robusta**: Backend en Node.js con persistencia de datos en MongoDB Atlas.
-
----
+* **Filtrado Dinámico:** Búsqueda en tiempo real por modelo, tecnología (Wi-Fi 5, 6, 6E, 7), entorno (Interior/Exterior/PTP), puertos y antenas MIMO.
+* **Interfaz Responsiva:** Diseño moderno y adaptable a dispositivos móviles construido con Tailwind CSS.
+* **API RESTful:** Backend optimizado construido en Node.js y Express.
+* **Base de Datos NoSQL:** Gestión del catálogo de equipos a través de MongoDB y Mongoose.
+* **Seguridad Integrada:** Protección de cabeceras HTTP con Helmet y prevención de abusos con Express Rate Limit.
 
 ## 🛠️ Tecnologías Utilizadas
 
-| Componente | Tecnología |
-| :--- | :--- |
-| **Frontend** | HTML5, Tailwind CSS, JavaScript (Vanilla ES6) |
-| **Backend** | Node.js, Express.js |
-| **Base de Datos** | MongoDB Atlas (Mongoose) |
-| **Despliegue** | GitHub Codespaces / Render |
+**Frontend:**
+* HTML5, CSS3, JavaScript (Vanilla)
+* Tailwind CSS (CDN)
 
----
+**Backend:**
+* Node.js
+* Express.js
+* MongoDB & Mongoose
+* Dotenv, CORS, Helmet, express-rate-limit
 
-## 📂 Estructura del Proyecto
+## 📝 Licencia
 
-```text
-├── client/
-│   └── index.html      # Interfaz de usuario y lógica de filtrado
-├── server/
-│   ├── config/db.js    # Conexión a MongoDB
-│   ├── models/         # Esquemas de Mongoose
-│   ├── routes/         # Endpoints de la API
-│   ├── seed.js         # Script para poblar la base de datos
-│   └── server.js       # Punto de entrada de la aplicación
-└── .env                # Variables de entorno (no incluido en el repo)
+Este proyecto fue creado con fines de demostración y herramientas de selección. Los datos e imágenes de los equipos pertenecen a Grandstream Networks, Inc.
