@@ -1,3 +1,4 @@
+
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 const express = require('express');
@@ -17,8 +18,8 @@ app.use(helmet());
 
 //Limitar peticiones
 const limiter = rateLimit({
-    windowsMs: 15*60*1000, // 15 minutos
-    max: 120,
+    windowMs: 15*60*1000, // 15 minutos
+    max: 200,
     message: "Demasiadas peticiones desde esta IP, por favor intenta de nuevo más tarde."
 });
 
