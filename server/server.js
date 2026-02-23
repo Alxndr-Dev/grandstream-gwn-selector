@@ -4,9 +4,12 @@ require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
-const accesspointsRoute = require('./routes/accesspoints.routes');
 const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
+
+//ROUTES
+const accesspointsRoute = require('./routes/accesspoints.routes');
+const pingRoutes = require('./routes/ping.routes');
 
 
 const app = express();
@@ -50,6 +53,7 @@ app.use(express.static(path.join(__dirname, '..', 'client')));
 
 // 3. Rutas de la API
 app.use('/api/accesspoints', accesspointsRoute);
+app.use('/ping', pingRoutes);
 
 // 4. Conectar a la base de datos
 connectDB();
