@@ -1,6 +1,8 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const AccessPoint = require('./models/accesspoints');
+const path = require('path');
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const accessPoints = [
   // ==========================================
@@ -44,7 +46,7 @@ const accessPoints = [
     model: "GWN7664E",
     category: "Indoor",
     technology: "Wi-Fi 6",
-    antennas: "4x4:4",
+    antennas: "4x4:4 (2.4GHz & 5GHz)",
     bands: ["2.4GHz", "5GHz"],
     channels: [],
     clients: 512,
@@ -106,7 +108,7 @@ const accessPoints = [
     throughput: "3 Gbps",
     imageUrl: "https://www.grandstream.com/hubfs/GWN7660EM_6.png",
     description: "Wi-Fi 6 Extender and Access Point with Mesh support.",
-    datasheet: "https://www.grandstream.com/hubfs/Product_Documentation/GWN7660EM/Datasheet_GWN7660EM_English.pdf"
+    datasheet: "https://www.grandstream.com/hubfs/Product_Documentation/GWN7660EM/Datasheet_GWN7660EM_English_12.4.2025%20v1.6.pdf"
   },
 
   // ==========================================
@@ -172,7 +174,7 @@ const accessPoints = [
     model: "GWN7670",
     category: "Indoor",
     technology: "Wi-Fi 7",
-    antennas: "2x2:2",
+    antennas: "2x2:2 (2.4GHz & 5GHz)",
     bands: ["2.4GHz", "5GHz"],
     channels: [],
     clients: 256,
@@ -245,7 +247,7 @@ const accessPoints = [
     model: "GWN7670LR",
     category: "Outdoor Long-Range",
     technology: "Wi-Fi 7",
-    antennas: "2x2:2",
+    antennas: "2x2:2 (2.4GHz & 5GHz)",
     bands: ["2.4GHz", "5GHz"],
     channels: [],
     clients: 256,
@@ -262,7 +264,7 @@ const accessPoints = [
     model: "GWN7664ELR",
     category: "Outdoor Long-Range",
     technology: "Wi-Fi 6",
-    antennas: "4x4:4",
+    antennas: "4x4:4 (2.4GHz & 5GHz)",
     bands: ["2.4GHz", "5GHz"],
     channels: [],
     clients: 512,
@@ -279,7 +281,7 @@ const accessPoints = [
     model: "GWN7664LR",
     category: "Outdoor Long-Range",
     technology: "Wi-Fi 6",
-    antennas: "4x4:4",
+    antennas: "4x4:4 (2.4GHz & 5GHz)",
     bands: ["2.4GHz", "5GHz"],
     channels: [],
     clients: 750,
@@ -296,7 +298,7 @@ const accessPoints = [
     model: "GWN7660ELR",
     category: "Outdoor Long-Range",
     technology: "Wi-Fi 6",
-    antennas: "2x2:2",
+    antennas: "2x2:2 (2.4GHz & 5GHz)",
     bands: ["2.4GHz", "5GHz"],
     channels: [],
     clients: 256,
@@ -313,7 +315,7 @@ const accessPoints = [
     model: "GWN7660LR",
     category: "Outdoor Long-Range",
     technology: "Wi-Fi 6",
-    antennas: "2x2:2",
+    antennas: "2x2:2 (2.4GHz & 5GHz)",
     bands: ["2.4GHz", "5GHz"],
     channels: [],
     clients: 500,
@@ -334,7 +336,7 @@ const accessPoints = [
     model: "GWN7670WM",
     category: "In-Wall",
     technology: "Wi-Fi 7",
-    antennas: "2x2:2",
+    antennas: "2x2:2 (2.4GHz & 5GHz)",
     bands: ["2.4GHz", "5GHz"],
     channels: [],
     clients: 256,
@@ -368,7 +370,7 @@ const accessPoints = [
     model: "GWN7661",
     category: "In-Wall",
     technology: "Wi-Fi 6",
-    antennas: "2x2:2",
+    antennas: "2x2:2 (2.4GHz & 5GHz)",
     bands: ["2.4GHz", "5GHz"],
     channels: [],
     clients: 500,
@@ -419,7 +421,7 @@ const accessPoints = [
     model: "GWN7604",
     category: "Indoor", 
     technology: "Wi-Fi 5",
-    antennas: "2x2:2",
+    antennas: "2x2:2 (2.4GHz), 3x3:2 (5GHz)",
     bands: ["2.4GHz", "5GHz"],
     channels: [],
     clients: 256,
@@ -440,7 +442,7 @@ const accessPoints = [
     model: "GWN7630",
     category: "Indoor",
     technology: "Wi-Fi 5",
-    antennas: "4x4:4",
+    antennas: "4x4:4 (2.4GHz & 5GHz)",
     bands: ["2.4GHz", "5GHz"],
     channels: [],
     clients: 200,
@@ -451,7 +453,7 @@ const accessPoints = [
     throughput: "2.33 Gbps",
     imageUrl: "https://www.grandstream.com/hubfs/Social%20Media%20Assets%20Global/Social%20Meta%20Images/Grandstream%20Website%20Meta%20Images/GWN7630%20Meta%20Image.png",
     description: "High-Performance 4x4:4 802.11ac Wave-2 Wi-Fi Access Point.",
-    datasheet: "https://www.grandstream.com/hubfs/Product_Documentation/GWN7630/Datasheet_GWN7630_English.pdf"
+    datasheet: "https://www.grandstream.com/hubfs/Product_Documentation/datasheet_gwn7630_english.pdf"
   },
   {
     model: "GWN7625",
@@ -474,7 +476,7 @@ const accessPoints = [
     model: "GWN7615",
     category: "Indoor",
     technology: "Wi-Fi 5",
-    antennas: "3x3:3",
+    antennas: "3x3:3 (2.4GHz & 5GHz)",
     bands: ["2.4GHz", "5GHz"],
     channels: [],
     clients: 200,
@@ -485,13 +487,13 @@ const accessPoints = [
     throughput: "1.75 Gbps",
     imageUrl: "https://www.grandstream.com/hubfs/Product%20Images/GWN/GWN7615_front.png",
     description: "Enterprise Performance 802.11ac Wave-2 Wi-Fi Access Point.",
-    datasheet: "https://www.grandstream.com/hubfs/Product_Documentation/GWN7615/Datasheet_GWN7615_English.pdf"
+    datasheet: "https://www.grandstream.com/hubfs/Product_Documentation/Datasheet_GWN7615_English.pdf"
   },
   {
     model: "GWN7605",
     category: "Indoor",
     technology: "Wi-Fi 5",
-    antennas: "2x2:2",
+    antennas: "2x2:2 (2.4GHz & 5GHz)",
     bands: ["2.4GHz", "5GHz"],
     channels: [],
     clients: 100,
@@ -502,7 +504,7 @@ const accessPoints = [
     throughput: "1.27 Gbps",
     imageUrl: "https://www.grandstream.com/hubfs/Social%20Media%20Assets%20Global/Social%20Meta%20Images/Grandstream%20Website%20Meta%20Images/GWN7630%20Meta%20Image.png",
     description: "Affordable 802.11ac Wave-2 Wi-Fi Access Point.",
-    datasheet: "https://www.grandstream.com/hubfs/Product_Documentation/GWN7605/Datasheet_GWN7605_English.pdf"
+    datasheet: "https://www.grandstream.com/hubfs/Product_Documentation/Datasheet_GWN7605_English.pdf"
   },
 
   // ==========================================
