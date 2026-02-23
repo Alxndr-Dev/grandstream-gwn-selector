@@ -23,7 +23,7 @@ app.use(
                 defaultSrc: ["'self'"],
                 // Permitimos el script de Tailwind y código en línea
                 scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com"],
-                // ¡ESTA ES LA LÍNEA NUEVA PARA ARREGLAR LOS FILTROS!
+                // Filtros
                 scriptSrcAttr: ["'unsafe-inline'"], 
                 // Permitimos estilos en línea
                 styleSrc: ["'self'", "'unsafe-inline'"],
