@@ -14,7 +14,22 @@ const app = express();
 // 1. Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(helmet());
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                // Permitimos el script de Tailwind y código en línea
+                scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com"],
+                // Permitimos estilos en línea (Tailwind los inyecta así)
+                styleSrc: ["'self'", "'unsafe-inline'"],
+                // Permitimos imágenes locales, en base64 y de cualquier URL externa (https)
+                imgSrc: ["'self'", "data:", "https:"],
+                connectSrc: ["'self'"],
+            },
+        },
+    })
+);
 
 //Limitar peticiones
 const limiter = rateLimit({
